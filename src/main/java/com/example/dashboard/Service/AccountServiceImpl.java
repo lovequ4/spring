@@ -7,19 +7,19 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.example.dashboard.Entity.User;
+import com.example.dashboard.Entity.Account;
 import com.example.dashboard.Security.JwtUtils;
-import com.example.dashboard.Repository.UserRepository;
+import com.example.dashboard.Repository.AccountRepository;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class AccountServiceImpl implements AccountService{
     
    
-    private UserRepository userRepository;
+    private AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder){
-        this.userRepository = userRepository;
+    public AccountServiceImpl(AccountRepository accountRepository, PasswordEncoder passwordEncoder){
+        this.accountRepository = accountRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -29,37 +29,37 @@ public class UserServiceImpl implements UserService{
     }
 
 
-    //user註冊驗證 函數
-    private void validateUser(User user){
-        if(userRepository.existsByEmail(user.getEmail())){
+    //account註冊驗證 函數
+    private void validateAccount(Account account){
+        if(accountRepository.existsByEmail(account.getEmail())){
             throw new IllegalStateException("Email already exists");
         }
 
-        if (user.getName() == null || user.getPassword() == null || user.getEmail() == null) {
+        if (account.getName() == null || account.getPassword() == null || account.getEmail() == null) {
             throw new IllegalArgumentException("Name, Password, Email, and Role are required");
         }
     
-        if (user.getPassword().isEmpty()) {
+        if (account.getPassword().isEmpty()) {
             throw new IllegalArgumentException("Password cannot be empty");
         }
     }
 
     @Override
-    public ResponseEntity<String> signup(User user) {
+    public ResponseEntity<String> signup(Account account) {
 
         try {
             
-            validateUser(user);
+            validateAccount(account);
 
-            String hashPassword = hashPassword(user.getPassword());   
+            String hashPassword = hashPassword(account.getPassword());   
 
-            user.setPassword(hashPassword);
+            account.setPassword(hashPassword);
             
 
-            User result = userRepository.save(user);
+            Account result = accountRepository.save(account);
 
             if(result!=null){
-                return ResponseEntity.status(HttpStatus.OK).body("User SignUp Successfully");
+                return ResponseEntity.status(HttpStatus.OK).body("account SignUp Successfully");
             }else {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Signup failed");
             }
@@ -73,16 +73,16 @@ public class UserServiceImpl implements UserService{
 
 
     @Override
-    public ResponseEntity<String> signin(User user) {
+    public ResponseEntity<String> signin(Account account) {
         try {
-            User userFromDB = userRepository.findByNameOrEmail(user.getName(), user.getEmail());
-            if(userFromDB == null){
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User not found");
+            Account accountFromDB = accountRepository.findByNameOrEmail(account.getName(), account.getEmail());
+            if(accountFromDB == null){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("account not found");
             }
 
-            if(passwordEncoder.matches(user.getPassword(),userFromDB.getPassword())){
+            if(passwordEncoder.matches(account.getPassword(),accountFromDB.getPassword())){
                
-                String token = JwtUtils.generateToken(userFromDB.getId(),userFromDB.getName(),userFromDB.getRole());
+                String token = JwtUtils.generateToken(accountFromDB.getId(),accountFromDB.getName(),accountFromDB.getRole());
                 return ResponseEntity.status(HttpStatus.OK).body(token);
 
             } else {

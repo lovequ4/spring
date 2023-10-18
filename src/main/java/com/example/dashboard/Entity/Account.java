@@ -12,13 +12,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name="users")
+@Table(name="accounts")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class User {
+public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
@@ -33,5 +33,5 @@ public class User {
     private String email;
 
     @Column
-    private String role = "employee";
+    private String role = "user";
 }

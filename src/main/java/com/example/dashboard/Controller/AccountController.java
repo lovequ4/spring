@@ -7,30 +7,30 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.dashboard.Entity.User;
-import com.example.dashboard.Service.UserService;
+import com.example.dashboard.Entity.Account;
+import com.example.dashboard.Service.AccountService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @CrossOrigin
 @RestController
-@Tag(name="User")
-@RequestMapping("/api/users")
-public class UserController {
+@Tag(name="Account")
+@RequestMapping("/api/accounts")
+public class AccountController {
     
-    private UserService userService;
+    private AccountService userService;
 
-    public UserController(UserService userService) {
+    public AccountController(AccountService userService) {
         this.userService = userService;
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<String> SignUp(@RequestBody User user){
+    public ResponseEntity<String> SignUp(@RequestBody Account user){
         return userService.signup(user);
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<String> SignIn(@RequestBody User user){
+    public ResponseEntity<String> SignIn(@RequestBody Account user){
         return userService.signin(user);
     }
 }
