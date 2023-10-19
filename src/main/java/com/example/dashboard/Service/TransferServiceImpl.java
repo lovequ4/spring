@@ -86,7 +86,7 @@ public class TransferServiceImpl implements TransferService{
 
             scheduledTask = scheduler.schedule(() -> {
                 processingTransfer(transfer);
-            }, 1, TimeUnit.MINUTES);
+            }, 5, TimeUnit.MINUTES);
 
             return ResponseEntity.status(HttpStatus.OK).body("Transfer is pending and can be canceled within 5 minutes.");
 
