@@ -1,5 +1,7 @@
 package com.example.dashboard.Entity;
 
+import java.math.BigDecimal;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -31,6 +33,9 @@ public class Account {
 
     @Column
     private String email;
+
+    @Column
+    private BigDecimal amount;
 
     @Column
     private String role = "user";

@@ -59,7 +59,7 @@ public class AccountServiceImpl implements AccountService{
             Account result = accountRepository.save(account);
 
             if(result!=null){
-                return ResponseEntity.status(HttpStatus.OK).body("account SignUp Successfully");
+                return ResponseEntity.status(HttpStatus.OK).body("Account SignUp Successfully");
             }else {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Signup failed");
             }
