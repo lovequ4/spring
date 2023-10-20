@@ -2,7 +2,9 @@ package com.example.dashboard.Service;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -12,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.example.dashboard.DTO.TransferRecordsDTO;
 import com.example.dashboard.Entity.Account;
 import com.example.dashboard.Entity.Transfer;
 import com.example.dashboard.Repository.AccountRepository;
@@ -164,4 +167,33 @@ public class TransferServiceImpl implements TransferService{
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("The transfer has been processed and cannot be canceled.");
         }    
     }
+
+
+    //GET
+    @Override
+    public ResponseEntity<List<TransferRecordsDTO>> getTransferRecords(long Id) {
+
+       List<Transfer> transferRecords  = transferRepository.findBySenderAccountId(Id);
+    
+        if (transferRecords.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        List<TransferRecordsDTO> transferRecordsDTOList = new ArrayList<>();
+        for (Transfer transfer : transferRecords) {
+            TransferRecordsDTO transferDTO = new TransferRecordsDTO();
+            transferDTO.setTransferId(transfer.getTransferId());
+            transferDTO.setSenderAccountId(transfer.getSenderAccount().getId());
+            transferDTO.setRecipientAccountId(transfer.getRecipientAccount().getId());
+            transferDTO.setTransferAmount(transfer.getTransferAmount());
+            transferDTO.setDescription(transfer.getDescription());
+            transferDTO.setCreatedTime(transfer.getCreatedTime());
+            transferDTO.setEndTime(transfer.getEndTime());
+            transferDTO.setStatus(transfer.getStatus());
+            transferRecordsDTOList.add(transferDTO);
+        }
+        
+        return ResponseEntity.ok(transferRecordsDTOList);
+    }
+    
 }
