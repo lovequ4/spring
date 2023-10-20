@@ -10,6 +10,8 @@ Frontend: vue3 + quasar framework  (前端放在client資料夾)
 
 轉帳功能，用戶之間可以互相轉帳，查詢轉帳紀錄，以及自己餘額。
 
+
+
 狀態在padding的時候，可以取消轉帳。
 ![image](https://github.com/lovequ4/spring/blob/main/ScreenShot/transfer01.gif)
 
