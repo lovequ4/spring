@@ -6,7 +6,7 @@ Tool:swagger
 
 Backend: spring boot
 
-Frontend: vue3 + quasar framework
+Frontend: vue3 + quasar framework  (前端放在client資料夾)
 
 轉帳功能，用戶之間可以互相轉帳，查詢轉帳紀錄，以及自己餘額。
 
