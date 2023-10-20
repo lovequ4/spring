@@ -1,6 +1,10 @@
 package com.example.dashboard.Service;
 
 
+import java.math.BigDecimal;
+
+import javax.security.auth.login.AccountNotFoundException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -95,4 +99,14 @@ public class AccountServiceImpl implements AccountService{
     }
 
     
+    public BigDecimal getAccountAmount(long Id)throws AccountNotFoundException{
+    
+        Account account = accountRepository.findById(Id);
+
+        if (account != null) {
+            return account.getAmount();
+        } else {
+            throw new AccountNotFoundException("Account not found for Id: " + Id);
+        }
+    }
 }
